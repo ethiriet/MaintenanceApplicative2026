@@ -1,5 +1,5 @@
 .idea/
 
+/GildedRose/target/
+/GildedRose/target/**/*.class
 /GildedRose/target/classes/com/gildedrose/*.class
-
-
