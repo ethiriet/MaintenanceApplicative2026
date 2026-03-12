@@ -89,4 +89,18 @@ class GildedRoseTest {
         assertEquals("Sulfuras, Hand of Ragnaros, 0, 80", item.toString());
     }
 
+    @Test
+    void conjured_decreasesQualityTwice() {
+        Item item = update(new Item("Conjured", 10, 20));
+
+        assertEquals("Conjured, 9, 18", item.toString());
+    }
+
+    @Test
+    void conjured_expired() {
+        Item item = update(new Item("Conjured", 0, 20));
+
+        assertEquals("Conjured, -1, 16", item.toString());
+    }
+
 }

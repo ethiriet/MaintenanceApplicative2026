@@ -62,6 +62,21 @@ class GildedRose {
             }
         }
     }
+
+    public void doConjuredItem(int i) {
+        if (items[i].quality > 0) {
+            items[i].quality = items[i].quality - 2;
+        }
+
+        items[i].sellIn = items[i].sellIn - 1;
+
+        if (items[i].sellIn < 0) {
+            if (items[i].quality > 0) {
+                items[i].quality = items[i].quality - 2;
+            }
+        }
+    }
+
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
             switch (items[i].name) {
@@ -73,6 +88,9 @@ class GildedRose {
                     break;
                 case "Sulfuras, Hand of Ragnaros":
                     doSulfuras(i);
+                    break;
+                case "Conjured":
+                    doConjuredItem(i);
                     break;
                 default:
                     doNormalItem(i);
