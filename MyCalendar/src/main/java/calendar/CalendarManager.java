@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalendarManager {
-    public List<Event> events;
+    private List<Event> events;
 
     public CalendarManager() {
         this.events = new ArrayList<>();
@@ -15,6 +15,10 @@ public class CalendarManager {
                              String lieu, String participants, int frequenceJours) {
         Event e = new Event(type, title, proprietaire, dateDebut, dureeMinutes, lieu, participants, frequenceJours);
         events.add(e);
+    }
+
+    public List<Event> getEvents() {
+        return new ArrayList<>(events);
     }
 
     public List<Event> eventsDansPeriode(LocalDateTime debut, LocalDateTime fin) {
