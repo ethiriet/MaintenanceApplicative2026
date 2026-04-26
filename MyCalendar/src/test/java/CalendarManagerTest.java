@@ -20,19 +20,32 @@ class CalendarManagerTest {
     }
 
     @Test
-    void ajouteUnRendezVousPersonnel() {
+    void ajouteUnEvenementDirectement() {
         CalendarManager calendar = new CalendarManager();
 
-        calendar.ajouterEvent(
-                "RDV_PERSONNEL",
+        Event event = new RendezVousPersonnel(
                 "Dentiste",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
-                60,
-                "",
-                "",
-                0
+                60
         );
+
+        calendar.ajouter(event);
+
+        assertEquals(1, calendar.getEvents().size());
+        assertSame(event, calendar.getEvents().get(0));
+    }
+
+    @Test
+    void ajouteUnRendezVousPersonnel() {
+        CalendarManager calendar = new CalendarManager();
+
+        calendar.ajouter(new RendezVousPersonnel(
+                "Dentiste",
+                "Pierre",
+                LocalDateTime.of(2026, 4, 20, 10, 0),
+                60
+        ));
 
         Event event = calendar.getEvents().get(0);
 
@@ -45,16 +58,14 @@ class CalendarManagerTest {
     void ajouteUneReunion() {
         CalendarManager calendar = new CalendarManager();
 
-        calendar.ajouterEvent(
-                "REUNION",
+        calendar.ajouter(new Reunion(
                 "Daily",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 9, 0),
                 30,
                 "Salle A",
-                "Pierre, Paul",
-                0
-        );
+                "Pierre, Paul"
+        ));
 
         Event event = calendar.getEvents().get(0);
 
@@ -71,16 +82,12 @@ class CalendarManagerTest {
     void ajouteUnEvenementPeriodique() {
         CalendarManager calendar = new CalendarManager();
 
-        calendar.ajouterEvent(
-                "PERIODIQUE",
+        calendar.ajouter(new EvenementPeriodique(
                 "Sport",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 18, 0),
-                0,
-                "",
-                "",
                 7
-        );
+        ));
 
         Event event = calendar.getEvents().get(0);
 
@@ -96,27 +103,19 @@ class CalendarManagerTest {
     void retourneLesEvenementsDansUnePeriode() {
         CalendarManager calendar = new CalendarManager();
 
-        calendar.ajouterEvent(
-                "RDV_PERSONNEL",
+        calendar.ajouter(new RendezVousPersonnel(
                 "Dans période",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
-                60,
-                "",
-                "",
-                0
-        );
+                60
+        ));
 
-        calendar.ajouterEvent(
-                "RDV_PERSONNEL",
+        calendar.ajouter(new RendezVousPersonnel(
                 "Hors période",
                 "Pierre",
                 LocalDateTime.of(2026, 5, 20, 10, 0),
-                60,
-                "",
-                "",
-                0
-        );
+                60
+        ));
 
         List<Event> result = calendar.eventsDansPeriode(
                 LocalDateTime.of(2026, 4, 1, 0, 0),
@@ -131,16 +130,12 @@ class CalendarManagerTest {
     void inclutUnEvenementSitueExactementAuDebutDeLaPeriode() {
         CalendarManager calendar = new CalendarManager();
 
-        calendar.ajouterEvent(
-                "RDV_PERSONNEL",
+        calendar.ajouter(new RendezVousPersonnel(
                 "Début période",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 1, 0, 0),
-                60,
-                "",
-                "",
-                0
-        );
+                60
+        ));
 
         List<Event> result = calendar.eventsDansPeriode(
                 LocalDateTime.of(2026, 4, 1, 0, 0),
@@ -154,16 +149,12 @@ class CalendarManagerTest {
     void inclutUnEvenementSitueExactementALaFinDeLaPeriode() {
         CalendarManager calendar = new CalendarManager();
 
-        calendar.ajouterEvent(
-                "RDV_PERSONNEL",
+        calendar.ajouter(new RendezVousPersonnel(
                 "Fin période",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 30, 23, 59),
-                60,
-                "",
-                "",
-                0
-        );
+                60
+        ));
 
         List<Event> result = calendar.eventsDansPeriode(
                 LocalDateTime.of(2026, 4, 1, 0, 0),
@@ -177,16 +168,12 @@ class CalendarManagerTest {
     void retourneUnEvenementPeriodiqueSiUneOccurrenceEstDansLaPeriode() {
         CalendarManager calendar = new CalendarManager();
 
-        calendar.ajouterEvent(
-                "PERIODIQUE",
+        calendar.ajouter(new EvenementPeriodique(
                 "Sport",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 1, 18, 0),
-                0,
-                "",
-                "",
                 7
-        );
+        ));
 
         List<Event> result = calendar.eventsDansPeriode(
                 LocalDateTime.of(2026, 4, 8, 0, 0),
@@ -201,16 +188,12 @@ class CalendarManagerTest {
     void neRetournePasUnEvenementPeriodiqueSiAucuneOccurrenceNestDansLaPeriode() {
         CalendarManager calendar = new CalendarManager();
 
-        calendar.ajouterEvent(
-                "PERIODIQUE",
+        calendar.ajouter(new EvenementPeriodique(
                 "Sport",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 1, 18, 0),
-                0,
-                "",
-                "",
                 7
-        );
+        ));
 
         List<Event> result = calendar.eventsDansPeriode(
                 LocalDateTime.of(2026, 4, 9, 0, 0),
@@ -281,22 +264,5 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         assertFalse(calendar.conflit(e1, e2));
-    }
-
-    @Test
-    void ajouteUnEvenementDirectement() {
-        CalendarManager calendar = new CalendarManager();
-
-        Event event = new RendezVousPersonnel(
-                "Dentiste",
-                "Pierre",
-                LocalDateTime.of(2026, 4, 20, 10, 0),
-                60
-        );
-
-        calendar.ajouter(event);
-
-        assertEquals(1, calendar.getEvents().size());
-        assertSame(event, calendar.getEvents().get(0));
     }
 }
