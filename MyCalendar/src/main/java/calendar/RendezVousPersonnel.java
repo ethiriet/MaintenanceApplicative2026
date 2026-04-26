@@ -12,4 +12,9 @@ public class RendezVousPersonnel extends Event {
     public String description() {
         return "RDV : " + title + " à " + dateDebut;
     }
+
+    @Override
+    public boolean estDansPeriode(DateEvenement debut, DateEvenement fin) {
+        return !dateDebut.isBefore(debut) && !dateDebut.isAfter(fin);
+    }
 }

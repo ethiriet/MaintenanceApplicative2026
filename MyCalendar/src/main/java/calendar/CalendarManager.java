@@ -20,18 +20,7 @@ public class CalendarManager {
         List<Event> result = new ArrayList<>();
 
         for (Event e : events) {
-            if (e.estPeriodique()) {
-                DateEvenement temp = e.dateDebut;
-
-                while (temp.isBefore(fin)) {
-                    if (!temp.isBefore(debut)) {
-                        result.add(e);
-                        break;
-                    }
-
-                    temp = temp.plusDays(e.frequenceJours());
-                }
-            } else if (!e.dateDebut.isBefore(debut) && !e.dateDebut.isAfter(fin)) {
+            if (e.estDansPeriode(debut, fin)) {
                 result.add(e);
             }
         }

@@ -36,4 +36,6 @@ public abstract class Event {
             }
         }
     }
+
+    public abstract boolean estDansPeriode(DateEvenement debut, DateEvenement fin);
 }
