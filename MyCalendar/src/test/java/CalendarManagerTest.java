@@ -8,6 +8,7 @@ import calendar.RendezVousPersonnel;
 import calendar.Reunion;
 import calendar.TitreEvenement;
 import org.junit.jupiter.api.Test;
+import calendar.EventId;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -268,5 +269,58 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         assertFalse(calendar.conflit(e1, e2));
+    }
+
+    @Test
+    void supprimeUnEvenementParSonIdentifiant() {
+        CalendarManager calendar = new CalendarManager();
+
+        EventId id = new EventId("event-1");
+
+        Event event = new RendezVousPersonnel(
+                id,
+                new TitreEvenement("Dentiste"),
+                "Pierre",
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 0)),
+                new DureeEvenement(60)
+        );
+
+        calendar.ajouter(event);
+
+        calendar.supprimer(id);
+
+        assertTrue(calendar.getEvents().isEmpty());
+    }
+
+    @Test
+    void neSupprimePasLesAutresEvenements() {
+        CalendarManager calendar = new CalendarManager();
+
+        EventId idASupprimer = new EventId("event-1");
+        EventId idAConserver = new EventId("event-2");
+
+        Event eventASupprimer = new RendezVousPersonnel(
+                idASupprimer,
+                new TitreEvenement("Dentiste"),
+                "Pierre",
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 0)),
+                new DureeEvenement(60)
+        );
+
+        Event eventAConserver = new RendezVousPersonnel(
+                idAConserver,
+                new TitreEvenement("Sport"),
+                "Pierre",
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 18, 0)),
+                new DureeEvenement(60)
+        );
+
+        calendar.ajouter(eventASupprimer);
+        calendar.ajouter(eventAConserver);
+
+        calendar.supprimer(idASupprimer);
+
+        assertEquals(1, calendar.getEvents().size());
+        assertSame(eventAConserver, calendar.getEvents().get(0));
     }
 }

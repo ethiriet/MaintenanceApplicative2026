@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public abstract class Event {
+    public final EventId id;
     public TitreEvenement title;
     public String proprietaire;
     public DateEvenement dateDebut;
     public DureeEvenement duree;
 
-    protected Event(TitreEvenement title, String proprietaire, DateEvenement dateDebut, DureeEvenement duree) {
+    protected Event(EventId id, TitreEvenement title, String proprietaire, DateEvenement dateDebut, DureeEvenement duree) {
+        this.id = id;
         this.title = title;
         this.proprietaire = proprietaire;
         this.dateDebut = dateDebut;
@@ -17,7 +19,9 @@ public abstract class Event {
     }
 
     public abstract String description();
-
+    public boolean aPourId(EventId id) {
+        return this.id.equals(id);
+    }
     public boolean estPeriodique() {
         return false;
     }

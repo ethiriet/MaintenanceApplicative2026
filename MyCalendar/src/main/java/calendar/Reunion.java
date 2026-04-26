@@ -1,15 +1,17 @@
 package calendar;
 
-import java.time.LocalDateTime;
-
 public class Reunion extends Event {
     public Lieu lieu;
     public String participants;
 
-    public Reunion(TitreEvenement title, String proprietaire, DateEvenement dateDebut, DureeEvenement duree, Lieu lieu, String participants) {
-        super(title, proprietaire, dateDebut, duree);
+    public Reunion(EventId id, TitreEvenement title, String proprietaire, DateEvenement dateDebut, DureeEvenement duree, Lieu lieu, String participants) {
+        super(id, title, proprietaire, dateDebut, duree);
         this.lieu = lieu;
         this.participants = participants;
+    }
+
+    public Reunion(TitreEvenement title, String proprietaire, DateEvenement dateDebut, DureeEvenement duree, Lieu lieu, String participants) {
+        this(EventId.nouveau(), title, proprietaire, dateDebut, duree, lieu, participants);
     }
 
     @Override

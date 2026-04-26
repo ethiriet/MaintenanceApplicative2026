@@ -38,6 +38,10 @@ public class CalendarManager {
         }
     }
 
+    public void supprimer(EventId id) {
+        events.removeIf(event -> event.aPourId(id));
+    }
+
     public void ajouter(Event event) {
         events.add(event);
     }

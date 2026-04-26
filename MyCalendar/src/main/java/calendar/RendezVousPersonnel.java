@@ -4,8 +4,12 @@ import java.time.LocalDateTime;
 
 public class RendezVousPersonnel extends Event {
 
+    public RendezVousPersonnel(EventId id, TitreEvenement title, String proprietaire, DateEvenement dateDebut, DureeEvenement duree) {
+        super(id,title, proprietaire, dateDebut, duree);
+    }
+
     public RendezVousPersonnel(TitreEvenement title, String proprietaire, DateEvenement dateDebut, DureeEvenement duree) {
-        super(title, proprietaire, dateDebut, duree);
+        this(EventId.nouveau(), title, proprietaire, dateDebut, duree);
     }
 
     @Override
