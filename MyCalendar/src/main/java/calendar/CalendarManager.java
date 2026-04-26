@@ -13,7 +13,22 @@ public class CalendarManager {
 
     public void ajouterEvent(String type, String title, String proprietaire, LocalDateTime dateDebut, int dureeMinutes,
                              String lieu, String participants, int frequenceJours) {
-        Event e = new Event(type, title, proprietaire, dateDebut, dureeMinutes, lieu, participants, frequenceJours);
+        Event e;
+
+        switch (type) {
+            case "RDV_PERSONNEL":
+                e = new RendezVousPersonnel(title, proprietaire, dateDebut, dureeMinutes);
+                break;
+            case "REUNION":
+                e = new Reunion(title, proprietaire, dateDebut, dureeMinutes, lieu, participants);
+                break;
+            case "PERIODIQUE":
+                e = new EvenementPeriodique(title, proprietaire, dateDebut, frequenceJours);
+                break;
+            default:
+                throw new IllegalArgumentException("Type d'événement inconnu : " + type);
+        }
+
         events.add(e);
     }
 
@@ -24,14 +39,14 @@ public class CalendarManager {
     public List<Event> eventsDansPeriode(LocalDateTime debut, LocalDateTime fin) {
         List<Event> result = new ArrayList<>();
         for (Event e : events) {
-            if (e.type.equals("PERIODIQUE")) {
+            if (e.estPeriodique()) {
                 LocalDateTime temp = e.dateDebut;
                 while (temp.isBefore(fin)) {
                     if (!temp.isBefore(debut)) {
                         result.add(e);
                         break;
                     }
-                    temp = temp.plusDays(e.frequenceJours);
+                    temp = temp.plusDays(e.frequenceJours());
                 }
             } else if (!e.dateDebut.isBefore(debut) && !e.dateDebut.isAfter(fin)) {
                 result.add(e);
@@ -44,7 +59,7 @@ public class CalendarManager {
         LocalDateTime fin1 = e1.dateDebut.plusMinutes(e1.dureeMinutes);
         LocalDateTime fin2 = e2.dateDebut.plusMinutes(e2.dureeMinutes);
 
-        if (e1.type.equals("PERIODIQUE") || e2.type.equals("PERIODIQUE")) {
+        if (e1.estPeriodique() || e2.estPeriodique()) {
             return false; // Simplification abusive
         }
 

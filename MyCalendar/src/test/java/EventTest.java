@@ -1,5 +1,7 @@
-
+import calendar.EvenementPeriodique;
 import calendar.Event;
+import calendar.RendezVousPersonnel;
+import calendar.Reunion;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -10,15 +12,11 @@ class EventTest {
 
     @Test
     void decritUnRendezVousPersonnel() {
-        Event event = new Event(
-                "RDV_PERSONNEL",
+        Event event = new RendezVousPersonnel(
                 "Dentiste",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 30),
-                60,
-                "",
-                "",
-                0
+                60
         );
 
         assertEquals(
@@ -29,15 +27,13 @@ class EventTest {
 
     @Test
     void decritUneReunion() {
-        Event event = new Event(
-                "REUNION",
+        Event event = new Reunion(
                 "Daily",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 9, 0),
                 30,
                 "Salle A",
-                "Pierre, Paul",
-                0
+                "Pierre, Paul"
         );
 
         assertEquals(
@@ -48,14 +44,10 @@ class EventTest {
 
     @Test
     void decritUnEvenementPeriodique() {
-        Event event = new Event(
-                "PERIODIQUE",
+        Event event = new EvenementPeriodique(
                 "Sport",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 18, 0),
-                0,
-                "",
-                "",
                 7
         );
 
@@ -63,21 +55,5 @@ class EventTest {
                 "Événement périodique : Sport tous les 7 jours",
                 event.description()
         );
-    }
-
-    @Test
-    void retourneUneDescriptionVidePourUnTypeInconnu() {
-        Event event = new Event(
-                "INCONNU",
-                "Titre",
-                "Pierre",
-                LocalDateTime.of(2026, 4, 20, 18, 0),
-                30,
-                "",
-                "",
-                0
-        );
-
-        assertEquals("", event.description());
     }
 }

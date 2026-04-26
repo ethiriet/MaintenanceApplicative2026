@@ -1,5 +1,8 @@
 import calendar.CalendarManager;
 import calendar.Event;
+import calendar.EvenementPeriodique;
+import calendar.RendezVousPersonnel;
+import calendar.Reunion;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -31,8 +34,11 @@ class CalendarManagerTest {
                 0
         );
 
+        Event event = calendar.getEvents().get(0);
+
         assertEquals(1, calendar.getEvents().size());
-        assertEquals("Dentiste", calendar.getEvents().get(0).title);
+        assertInstanceOf(RendezVousPersonnel.class, event);
+        assertEquals("Dentiste", event.title);
     }
 
     @Test
@@ -52,10 +58,13 @@ class CalendarManagerTest {
 
         Event event = calendar.getEvents().get(0);
 
-        assertEquals("REUNION", event.type);
-        assertEquals("Daily", event.title);
-        assertEquals("Salle A", event.lieu);
-        assertEquals("Pierre, Paul", event.participants);
+        assertInstanceOf(Reunion.class, event);
+
+        Reunion reunion = (Reunion) event;
+
+        assertEquals("Daily", reunion.title);
+        assertEquals("Salle A", reunion.lieu);
+        assertEquals("Pierre, Paul", reunion.participants);
     }
 
     @Test
@@ -75,8 +84,12 @@ class CalendarManagerTest {
 
         Event event = calendar.getEvents().get(0);
 
-        assertEquals("PERIODIQUE", event.type);
-        assertEquals(7, event.frequenceJours);
+        assertInstanceOf(EvenementPeriodique.class, event);
+
+        EvenementPeriodique evenementPeriodique = (EvenementPeriodique) event;
+
+        assertEquals("Sport", evenementPeriodique.title);
+        assertEquals(7, evenementPeriodique.frequenceJours);
     }
 
     @Test
@@ -209,26 +222,18 @@ class CalendarManagerTest {
 
     @Test
     void detecteUnConflitEntreDeuxEvenementsSimplesQuiSeChevauchent() {
-        Event e1 = new Event(
-                "RDV_PERSONNEL",
+        Event e1 = new RendezVousPersonnel(
                 "RDV 1",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
-                60,
-                "",
-                "",
-                0
+                60
         );
 
-        Event e2 = new Event(
-                "RDV_PERSONNEL",
+        Event e2 = new RendezVousPersonnel(
                 "RDV 2",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 30),
-                60,
-                "",
-                "",
-                0
+                60
         );
 
         CalendarManager calendar = new CalendarManager();
@@ -238,26 +243,18 @@ class CalendarManagerTest {
 
     @Test
     void neDetectePasDeConflitEntreDeuxEvenementsSimplesQuiNeSeChevauchentPas() {
-        Event e1 = new Event(
-                "RDV_PERSONNEL",
+        Event e1 = new RendezVousPersonnel(
                 "RDV 1",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
-                60,
-                "",
-                "",
-                0
+                60
         );
 
-        Event e2 = new Event(
-                "RDV_PERSONNEL",
+        Event e2 = new RendezVousPersonnel(
                 "RDV 2",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 11, 0),
-                60,
-                "",
-                "",
-                0
+                60
         );
 
         CalendarManager calendar = new CalendarManager();
@@ -267,26 +264,18 @@ class CalendarManagerTest {
 
     @Test
     void neDetectePasLesConflitsAvecUnEvenementPeriodiqueComportementActuel() {
-        Event e1 = new Event(
-                "PERIODIQUE",
+        Event e1 = new EvenementPeriodique(
                 "Sport",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
-                60,
-                "",
-                "",
                 7
         );
 
-        Event e2 = new Event(
-                "RDV_PERSONNEL",
+        Event e2 = new RendezVousPersonnel(
                 "RDV",
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 30),
-                60,
-                "",
-                "",
-                0
+                60
         );
 
         CalendarManager calendar = new CalendarManager();
