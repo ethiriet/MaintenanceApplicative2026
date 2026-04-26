@@ -7,7 +7,7 @@ public class EvenementPeriodique extends Event {
 
     public EvenementPeriodique(TitreEvenement title,
                                String proprietaire,
-                               LocalDateTime dateDebut,
+                               DateEvenement dateDebut,
                                int frequenceJours) {
 
         super(title, proprietaire, dateDebut, new DureeEvenement(0));

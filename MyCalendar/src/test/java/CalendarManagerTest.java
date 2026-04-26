@@ -1,4 +1,5 @@
 import calendar.CalendarManager;
+import calendar.DateEvenement;
 import calendar.DureeEvenement;
 import calendar.Event;
 import calendar.EvenementPeriodique;
@@ -29,7 +30,7 @@ class CalendarManagerTest {
         Event event = new RendezVousPersonnel(
                 new TitreEvenement("Dentiste"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 10, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 0)),
                 new DureeEvenement(60)
         );
 
@@ -46,7 +47,7 @@ class CalendarManagerTest {
         calendar.ajouter(new RendezVousPersonnel(
                 new TitreEvenement("Dentiste"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 10, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 0)),
                 new DureeEvenement(60)
         ));
 
@@ -64,7 +65,7 @@ class CalendarManagerTest {
         calendar.ajouter(new Reunion(
                 new TitreEvenement("Daily"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 9, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 9, 0)),
                 new DureeEvenement(30),
                 new Lieu("Salle A"),
                 "Pierre, Paul"
@@ -88,7 +89,7 @@ class CalendarManagerTest {
         calendar.ajouter(new EvenementPeriodique(
                 new TitreEvenement("Sport"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 18, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 18, 0)),
                 7
         ));
 
@@ -109,20 +110,20 @@ class CalendarManagerTest {
         calendar.ajouter(new RendezVousPersonnel(
                 new TitreEvenement("Dans période"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 10, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 0)),
                 new DureeEvenement(60)
         ));
 
         calendar.ajouter(new RendezVousPersonnel(
                 new TitreEvenement("Hors période"),
                 "Pierre",
-                LocalDateTime.of(2026, 5, 20, 10, 0),
+                new DateEvenement(LocalDateTime.of(2026, 5, 20, 10, 0)),
                 new DureeEvenement(60)
         ));
 
         List<Event> result = calendar.eventsDansPeriode(
-                LocalDateTime.of(2026, 4, 1, 0, 0),
-                LocalDateTime.of(2026, 4, 30, 23, 59)
+                new DateEvenement(LocalDateTime.of(2026, 4, 1, 0, 0)),
+                new DateEvenement(LocalDateTime.of(2026, 4, 30, 23, 59))
         );
 
         assertEquals(1, result.size());
@@ -136,13 +137,13 @@ class CalendarManagerTest {
         calendar.ajouter(new RendezVousPersonnel(
                 new TitreEvenement("Début période"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 1, 0, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 1, 0, 0)),
                 new DureeEvenement(60)
         ));
 
         List<Event> result = calendar.eventsDansPeriode(
-                LocalDateTime.of(2026, 4, 1, 0, 0),
-                LocalDateTime.of(2026, 4, 30, 23, 59)
+                new DateEvenement(LocalDateTime.of(2026, 4, 1, 0, 0)),
+                new DateEvenement(LocalDateTime.of(2026, 4, 30, 23, 59))
         );
 
         assertEquals(1, result.size());
@@ -155,13 +156,13 @@ class CalendarManagerTest {
         calendar.ajouter(new RendezVousPersonnel(
                 new TitreEvenement("Fin période"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 30, 23, 59),
+                new DateEvenement(LocalDateTime.of(2026, 4, 30, 23, 59)),
                 new DureeEvenement(60)
         ));
 
         List<Event> result = calendar.eventsDansPeriode(
-                LocalDateTime.of(2026, 4, 1, 0, 0),
-                LocalDateTime.of(2026, 4, 30, 23, 59)
+                new DateEvenement(LocalDateTime.of(2026, 4, 1, 0, 0)),
+                new DateEvenement(LocalDateTime.of(2026, 4, 30, 23, 59))
         );
 
         assertEquals(1, result.size());
@@ -174,13 +175,13 @@ class CalendarManagerTest {
         calendar.ajouter(new EvenementPeriodique(
                 new TitreEvenement("Sport"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 1, 18, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 1, 18, 0)),
                 7
         ));
 
         List<Event> result = calendar.eventsDansPeriode(
-                LocalDateTime.of(2026, 4, 8, 0, 0),
-                LocalDateTime.of(2026, 4, 8, 23, 59)
+                new DateEvenement(LocalDateTime.of(2026, 4, 8, 0, 0)),
+                new DateEvenement(LocalDateTime.of(2026, 4, 8, 23, 59))
         );
 
         assertEquals(1, result.size());
@@ -194,13 +195,13 @@ class CalendarManagerTest {
         calendar.ajouter(new EvenementPeriodique(
                 new TitreEvenement("Sport"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 1, 18, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 1, 18, 0)),
                 7
         ));
 
         List<Event> result = calendar.eventsDansPeriode(
-                LocalDateTime.of(2026, 4, 9, 0, 0),
-                LocalDateTime.of(2026, 4, 9, 23, 59)
+                new DateEvenement(LocalDateTime.of(2026, 4, 9, 0, 0)),
+                new DateEvenement(LocalDateTime.of(2026, 4, 9, 23, 59))
         );
 
         assertTrue(result.isEmpty());
@@ -211,14 +212,14 @@ class CalendarManagerTest {
         Event e1 = new RendezVousPersonnel(
                 new TitreEvenement("RDV 1"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 10, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 0)),
                 new DureeEvenement(60)
         );
 
         Event e2 = new RendezVousPersonnel(
                 new TitreEvenement("RDV 2"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 10, 30),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 30)),
                 new DureeEvenement(60)
         );
 
@@ -232,14 +233,14 @@ class CalendarManagerTest {
         Event e1 = new RendezVousPersonnel(
                 new TitreEvenement("RDV 1"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 10, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 0)),
                 new DureeEvenement(60)
         );
 
         Event e2 = new RendezVousPersonnel(
                 new TitreEvenement("RDV 2"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 11, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 11, 0)),
                 new DureeEvenement(60)
         );
 
@@ -253,14 +254,14 @@ class CalendarManagerTest {
         Event e1 = new EvenementPeriodique(
                 new TitreEvenement("Sport"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 10, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 0)),
                 7
         );
 
         Event e2 = new RendezVousPersonnel(
                 new TitreEvenement("RDV"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 10, 30),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 30)),
                 new DureeEvenement(60)
         );
 

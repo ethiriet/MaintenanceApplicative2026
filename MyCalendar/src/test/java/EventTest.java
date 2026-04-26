@@ -1,3 +1,4 @@
+import calendar.DateEvenement;
 import calendar.DureeEvenement;
 import calendar.Event;
 import calendar.EvenementPeriodique;
@@ -18,7 +19,7 @@ class EventTest {
         Event event = new RendezVousPersonnel(
                 new TitreEvenement("Dentiste"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 10, 30),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 10, 30)),
                 new DureeEvenement(60)
         );
 
@@ -33,7 +34,7 @@ class EventTest {
         Event event = new Reunion(
                 new TitreEvenement("Daily"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 9, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 9, 0)),
                 new DureeEvenement(30),
                 new Lieu("Salle A"),
                 "Pierre, Paul"
@@ -50,7 +51,7 @@ class EventTest {
         Event event = new EvenementPeriodique(
                 new TitreEvenement("Sport"),
                 "Pierre",
-                LocalDateTime.of(2026, 4, 20, 18, 0),
+                new DateEvenement(LocalDateTime.of(2026, 4, 20, 18, 0)),
                 7
         );
 

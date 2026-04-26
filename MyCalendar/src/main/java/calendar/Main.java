@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+import static calendar.Event.afficherListe;
+
 public class Main {
     public static void main(String[] args) {
         CalendarManager calendar = new CalendarManager();
@@ -124,7 +126,10 @@ public class Main {
                                 LocalDateTime debutMois = LocalDateTime.of(anneeMois, mois, 1, 0, 0);
                                 LocalDateTime finMois = debutMois.plusMonths(1).minusSeconds(1);
 
-                                afficherListe(calendar.eventsDansPeriode(debutMois, finMois));
+                                afficherListe(calendar.eventsDansPeriode(
+                                        new DateEvenement(debutMois),
+                                        new DateEvenement(finMois)
+                                ));
                                 break;
 
                             case "3":
@@ -140,7 +145,10 @@ public class Main {
                                         .withHour(0).withMinute(0);
                                 LocalDateTime finSemaine = debutSemaine.plusDays(7).minusSeconds(1);
 
-                                afficherListe(calendar.eventsDansPeriode(debutSemaine, finSemaine));
+                                afficherListe(calendar.eventsDansPeriode(
+                                        new DateEvenement(debutSemaine),
+                                        new DateEvenement(finSemaine)
+                                ));
                                 break;
 
                             case "4":
@@ -154,7 +162,10 @@ public class Main {
                                 LocalDateTime debutJour = LocalDateTime.of(anneeJour, moisJour, jour, 0, 0);
                                 LocalDateTime finJour = debutJour.plusDays(1).minusSeconds(1);
 
-                                afficherListe(calendar.eventsDansPeriode(debutJour, finJour));
+                                afficherListe(calendar.eventsDansPeriode(
+                                        new DateEvenement(debutJour),
+                                        new DateEvenement(finJour)
+                                ));
                                 break;
                         }
                         break;
@@ -179,7 +190,7 @@ public class Main {
                         calendar.ajouter(new RendezVousPersonnel(
                                 new TitreEvenement(titre),
                                 utilisateur,
-                                LocalDateTime.of(annee, moisRdv, jourRdv, heure, minute),
+                                new DateEvenement(LocalDateTime.of(annee, moisRdv, jourRdv, heure, minute)),
                                 new DureeEvenement(duree)
                         ));
 
@@ -218,7 +229,7 @@ public class Main {
                         calendar.ajouter(new Reunion(
                                 new TitreEvenement(titre2),
                                 utilisateur,
-                                LocalDateTime.of(annee2, moisRdv2, jourRdv2, heure2, minute2),
+                                new DateEvenement(LocalDateTime.of(annee2, moisRdv2, jourRdv2, heure2, minute2)),
                                 new DureeEvenement(duree2),
                                 new Lieu(lieu),
                                 participants
@@ -247,7 +258,7 @@ public class Main {
                             calendar.ajouter(new EvenementPeriodique(
                                     new TitreEvenement(titre3),
                                     utilisateur,
-                                    LocalDateTime.of(annee3, moisRdv3, jourRdv3, heure3, minute3),
+                                    new DateEvenement(LocalDateTime.of(annee3, moisRdv3, jourRdv3, heure3, minute3)),
                                     frequence
                             ));
 
@@ -260,17 +271,6 @@ public class Main {
 
                         utilisateur = null;
                 }
-            }
-        }
-    }
-
-    private static void afficherListe(List<Event> evenements) {
-        if (evenements.isEmpty()) {
-            System.out.println("Aucun événement trouvé pour cette période.");
-        } else {
-            System.out.println("Événements trouvés : ");
-            for (Event e : evenements) {
-                System.out.println("- " + e.description());
             }
         }
     }
