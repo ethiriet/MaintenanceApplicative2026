@@ -29,17 +29,7 @@ public class CalendarManager {
     }
 
     public boolean conflit(Event e1, Event e2) {
-        DateEvenement fin1 = e1.dateDebut.plusMinutes(e1.duree.enMinutes());
-        DateEvenement fin2 = e2.dateDebut.plusMinutes(e2.duree.enMinutes());
-
-        if (e1.estPeriodique() || e2.estPeriodique()) {
-            return false; // Simplification abusive
-        }
-
-        if (e1.dateDebut.isBefore(fin2) && fin1.isAfter(e2.dateDebut)) {
-            return true;
-        }
-        return false;
+        return e1.estEnConflitAvec(e2);
     }
 
     public void afficherEvenements() {

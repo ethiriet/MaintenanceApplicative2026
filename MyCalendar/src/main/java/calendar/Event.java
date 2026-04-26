@@ -38,4 +38,11 @@ public abstract class Event {
     }
 
     public abstract boolean estDansPeriode(DateEvenement debut, DateEvenement fin);
+
+    public boolean estEnConflitAvec(Event autre) {
+        DateEvenement fin = dateDebut.plusMinutes(duree.enMinutes());
+        DateEvenement finAutre = autre.dateDebut.plusMinutes(autre.duree.enMinutes());
+
+        return dateDebut.isBefore(finAutre) && fin.isAfter(autre.dateDebut);
+    }
 }

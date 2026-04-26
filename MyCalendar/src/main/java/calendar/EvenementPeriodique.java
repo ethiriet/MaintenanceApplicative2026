@@ -42,4 +42,9 @@ public class EvenementPeriodique extends Event {
 
         return false;
     }
+
+    @Override
+    public boolean estEnConflitAvec(Event autre) {
+        return false;
+    }
 }
