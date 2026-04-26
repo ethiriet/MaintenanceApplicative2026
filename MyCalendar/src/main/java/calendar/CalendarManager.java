@@ -29,7 +29,7 @@ public class CalendarManager {
                 throw new IllegalArgumentException("Type d'événement inconnu : " + type);
         }
 
-        events.add(e);
+        ajouter(e);
     }
 
     public List<Event> getEvents() {
@@ -73,5 +73,9 @@ public class CalendarManager {
         for (Event e : events) {
             System.out.println(e.description());
         }
+    }
+
+    public void ajouter(Event event) {
+        events.add(event);
     }
 }

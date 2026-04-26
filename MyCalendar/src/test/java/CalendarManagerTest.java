@@ -282,4 +282,21 @@ class CalendarManagerTest {
 
         assertFalse(calendar.conflit(e1, e2));
     }
+
+    @Test
+    void ajouteUnEvenementDirectement() {
+        CalendarManager calendar = new CalendarManager();
+
+        Event event = new RendezVousPersonnel(
+                "Dentiste",
+                "Pierre",
+                LocalDateTime.of(2026, 4, 20, 10, 0),
+                60
+        );
+
+        calendar.ajouter(event);
+
+        assertEquals(1, calendar.getEvents().size());
+        assertSame(event, calendar.getEvents().get(0));
+    }
 }
