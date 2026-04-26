@@ -1,7 +1,10 @@
-import calendar.EvenementPeriodique;
+import calendar.DureeEvenement;
 import calendar.Event;
+import calendar.EvenementPeriodique;
+import calendar.Lieu;
 import calendar.RendezVousPersonnel;
 import calendar.Reunion;
+import calendar.TitreEvenement;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -13,10 +16,10 @@ class EventTest {
     @Test
     void decritUnRendezVousPersonnel() {
         Event event = new RendezVousPersonnel(
-                "Dentiste",
+                new TitreEvenement("Dentiste"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 30),
-                60
+                new DureeEvenement(60)
         );
 
         assertEquals(
@@ -28,11 +31,11 @@ class EventTest {
     @Test
     void decritUneReunion() {
         Event event = new Reunion(
-                "Daily",
+                new TitreEvenement("Daily"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 9, 0),
-                30,
-                "Salle A",
+                new DureeEvenement(30),
+                new Lieu("Salle A"),
                 "Pierre, Paul"
         );
 
@@ -45,7 +48,7 @@ class EventTest {
     @Test
     void decritUnEvenementPeriodique() {
         Event event = new EvenementPeriodique(
-                "Sport",
+                new TitreEvenement("Sport"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 18, 0),
                 7

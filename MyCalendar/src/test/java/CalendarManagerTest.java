@@ -1,8 +1,11 @@
 import calendar.CalendarManager;
+import calendar.DureeEvenement;
 import calendar.Event;
 import calendar.EvenementPeriodique;
+import calendar.Lieu;
 import calendar.RendezVousPersonnel;
 import calendar.Reunion;
+import calendar.TitreEvenement;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -24,10 +27,10 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         Event event = new RendezVousPersonnel(
-                "Dentiste",
+                new TitreEvenement("Dentiste"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
-                60
+                new DureeEvenement(60)
         );
 
         calendar.ajouter(event);
@@ -41,17 +44,17 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         calendar.ajouter(new RendezVousPersonnel(
-                "Dentiste",
+                new TitreEvenement("Dentiste"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
-                60
+                new DureeEvenement(60)
         ));
 
         Event event = calendar.getEvents().get(0);
 
         assertEquals(1, calendar.getEvents().size());
         assertInstanceOf(RendezVousPersonnel.class, event);
-        assertEquals("Dentiste", event.title);
+        assertEquals("Dentiste", event.title.valeur());
     }
 
     @Test
@@ -59,11 +62,11 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         calendar.ajouter(new Reunion(
-                "Daily",
+                new TitreEvenement("Daily"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 9, 0),
-                30,
-                "Salle A",
+                new DureeEvenement(30),
+                new Lieu("Salle A"),
                 "Pierre, Paul"
         ));
 
@@ -73,8 +76,8 @@ class CalendarManagerTest {
 
         Reunion reunion = (Reunion) event;
 
-        assertEquals("Daily", reunion.title);
-        assertEquals("Salle A", reunion.lieu);
+        assertEquals("Daily", reunion.title.valeur());
+        assertEquals("Salle A", reunion.lieu.toString());
         assertEquals("Pierre, Paul", reunion.participants);
     }
 
@@ -83,7 +86,7 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         calendar.ajouter(new EvenementPeriodique(
-                "Sport",
+                new TitreEvenement("Sport"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 18, 0),
                 7
@@ -95,7 +98,7 @@ class CalendarManagerTest {
 
         EvenementPeriodique evenementPeriodique = (EvenementPeriodique) event;
 
-        assertEquals("Sport", evenementPeriodique.title);
+        assertEquals("Sport", evenementPeriodique.title.valeur());
         assertEquals(7, evenementPeriodique.frequenceJours);
     }
 
@@ -104,17 +107,17 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         calendar.ajouter(new RendezVousPersonnel(
-                "Dans période",
+                new TitreEvenement("Dans période"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
-                60
+                new DureeEvenement(60)
         ));
 
         calendar.ajouter(new RendezVousPersonnel(
-                "Hors période",
+                new TitreEvenement("Hors période"),
                 "Pierre",
                 LocalDateTime.of(2026, 5, 20, 10, 0),
-                60
+                new DureeEvenement(60)
         ));
 
         List<Event> result = calendar.eventsDansPeriode(
@@ -123,7 +126,7 @@ class CalendarManagerTest {
         );
 
         assertEquals(1, result.size());
-        assertEquals("Dans période", result.get(0).title);
+        assertEquals("Dans période", result.get(0).title.valeur());
     }
 
     @Test
@@ -131,10 +134,10 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         calendar.ajouter(new RendezVousPersonnel(
-                "Début période",
+                new TitreEvenement("Début période"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 1, 0, 0),
-                60
+                new DureeEvenement(60)
         ));
 
         List<Event> result = calendar.eventsDansPeriode(
@@ -150,10 +153,10 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         calendar.ajouter(new RendezVousPersonnel(
-                "Fin période",
+                new TitreEvenement("Fin période"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 30, 23, 59),
-                60
+                new DureeEvenement(60)
         ));
 
         List<Event> result = calendar.eventsDansPeriode(
@@ -169,7 +172,7 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         calendar.ajouter(new EvenementPeriodique(
-                "Sport",
+                new TitreEvenement("Sport"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 1, 18, 0),
                 7
@@ -181,7 +184,7 @@ class CalendarManagerTest {
         );
 
         assertEquals(1, result.size());
-        assertEquals("Sport", result.get(0).title);
+        assertEquals("Sport", result.get(0).title.valeur());
     }
 
     @Test
@@ -189,7 +192,7 @@ class CalendarManagerTest {
         CalendarManager calendar = new CalendarManager();
 
         calendar.ajouter(new EvenementPeriodique(
-                "Sport",
+                new TitreEvenement("Sport"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 1, 18, 0),
                 7
@@ -206,17 +209,17 @@ class CalendarManagerTest {
     @Test
     void detecteUnConflitEntreDeuxEvenementsSimplesQuiSeChevauchent() {
         Event e1 = new RendezVousPersonnel(
-                "RDV 1",
+                new TitreEvenement("RDV 1"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
-                60
+                new DureeEvenement(60)
         );
 
         Event e2 = new RendezVousPersonnel(
-                "RDV 2",
+                new TitreEvenement("RDV 2"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 30),
-                60
+                new DureeEvenement(60)
         );
 
         CalendarManager calendar = new CalendarManager();
@@ -227,17 +230,17 @@ class CalendarManagerTest {
     @Test
     void neDetectePasDeConflitEntreDeuxEvenementsSimplesQuiNeSeChevauchentPas() {
         Event e1 = new RendezVousPersonnel(
-                "RDV 1",
+                new TitreEvenement("RDV 1"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
-                60
+                new DureeEvenement(60)
         );
 
         Event e2 = new RendezVousPersonnel(
-                "RDV 2",
+                new TitreEvenement("RDV 2"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 11, 0),
-                60
+                new DureeEvenement(60)
         );
 
         CalendarManager calendar = new CalendarManager();
@@ -248,17 +251,17 @@ class CalendarManagerTest {
     @Test
     void neDetectePasLesConflitsAvecUnEvenementPeriodiqueComportementActuel() {
         Event e1 = new EvenementPeriodique(
-                "Sport",
+                new TitreEvenement("Sport"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 0),
                 7
         );
 
         Event e2 = new RendezVousPersonnel(
-                "RDV",
+                new TitreEvenement("RDV"),
                 "Pierre",
                 LocalDateTime.of(2026, 4, 20, 10, 30),
-                60
+                new DureeEvenement(60)
         );
 
         CalendarManager calendar = new CalendarManager();

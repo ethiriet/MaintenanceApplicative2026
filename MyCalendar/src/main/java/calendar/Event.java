@@ -3,16 +3,16 @@ package calendar;
 import java.time.LocalDateTime;
 
 public abstract class Event {
-    public String title;
+    public TitreEvenement title;
     public String proprietaire;
     public LocalDateTime dateDebut;
-    public int dureeMinutes;
+    public DureeEvenement duree;
 
-    protected Event(String title, String proprietaire, LocalDateTime dateDebut, int dureeMinutes) {
+    protected Event(TitreEvenement title, String proprietaire, LocalDateTime dateDebut, DureeEvenement duree) {
         this.title = title;
         this.proprietaire = proprietaire;
         this.dateDebut = dateDebut;
-        this.dureeMinutes = dureeMinutes;
+        this.duree = duree;
     }
 
     public abstract String description();

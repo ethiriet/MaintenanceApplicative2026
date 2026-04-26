@@ -11,26 +11,6 @@ public class CalendarManager {
         this.events = new ArrayList<>();
     }
 
-    public void ajouterEvent(String type, String title, String proprietaire, LocalDateTime dateDebut, int dureeMinutes,
-                             String lieu, String participants, int frequenceJours) {
-        Event e;
-
-        switch (type) {
-            case "RDV_PERSONNEL":
-                e = new RendezVousPersonnel(title, proprietaire, dateDebut, dureeMinutes);
-                break;
-            case "REUNION":
-                e = new Reunion(title, proprietaire, dateDebut, dureeMinutes, lieu, participants);
-                break;
-            case "PERIODIQUE":
-                e = new EvenementPeriodique(title, proprietaire, dateDebut, frequenceJours);
-                break;
-            default:
-                throw new IllegalArgumentException("Type d'événement inconnu : " + type);
-        }
-
-        ajouter(e);
-    }
 
     public List<Event> getEvents() {
         return new ArrayList<>(events);
@@ -56,8 +36,8 @@ public class CalendarManager {
     }
 
     public boolean conflit(Event e1, Event e2) {
-        LocalDateTime fin1 = e1.dateDebut.plusMinutes(e1.dureeMinutes);
-        LocalDateTime fin2 = e2.dateDebut.plusMinutes(e2.dureeMinutes);
+        LocalDateTime fin1 = e1.dateDebut.plusMinutes(e1.duree.enMinutes());
+        LocalDateTime fin2 = e2.dateDebut.plusMinutes(e2.duree.enMinutes());
 
         if (e1.estPeriodique() || e2.estPeriodique()) {
             return false; // Simplification abusive

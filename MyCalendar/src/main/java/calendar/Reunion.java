@@ -3,11 +3,11 @@ package calendar;
 import java.time.LocalDateTime;
 
 public class Reunion extends Event {
-    public String lieu;
+    public Lieu lieu;
     public String participants;
 
-    public Reunion(String title, String proprietaire, LocalDateTime dateDebut, int dureeMinutes, String lieu, String participants) {
-        super(title, proprietaire, dateDebut, dureeMinutes);
+    public Reunion(TitreEvenement title, String proprietaire, LocalDateTime dateDebut, DureeEvenement duree, Lieu lieu, String participants) {
+        super(title, proprietaire, dateDebut, duree);
         this.lieu = lieu;
         this.participants = participants;
     }

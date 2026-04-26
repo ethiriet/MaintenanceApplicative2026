@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public class RendezVousPersonnel extends Event {
 
-    public RendezVousPersonnel(String title, String proprietaire, LocalDateTime dateDebut, int dureeMinutes) {
-        super(title, proprietaire, dateDebut, dureeMinutes);
+    public RendezVousPersonnel(TitreEvenement title, String proprietaire, LocalDateTime dateDebut, DureeEvenement duree) {
+        super(title, proprietaire, dateDebut, duree);
     }
 
     @Override
